@@ -9,3 +9,12 @@ class ServerInstance:
     version: str
     port: int
     process: subprocess.Popen
+
+    def serialize(self):
+        return {
+            "game": self.game,
+            "map": self.map,
+            "version": self.version,
+            "port": self.port,
+            "pid": self.process.pid #why not
+        }
