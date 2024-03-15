@@ -9,6 +9,9 @@ class ServerInstance:
     version: str
     port: int
     process: subprocess.Popen
+    
+    def get_name(self):
+        return f"{self.game}-{self.version}_{self.port}"
 
     def serialize(self):
         return {

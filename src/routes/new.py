@@ -4,6 +4,7 @@ import subprocess
 from flask import request
 from managers.porter import Porter
 from instance import ServerInstance
+from managers.servor import Servor
 from variables import flask_app
 
 @flask_app.route("/new", methods=["POST"])
@@ -48,6 +49,6 @@ def new_server():
     else:
         process = subprocess.Popen(["sh", f"start.sh"], cwd=instance_folder, stdout=subprocess.DEVNULL)
 
-    ServerInstance(game, map, version, port, process)
+    Servor.add_instance(ServerInstance(game, map, version, port, process))
 
     return f"Started up new {game_version} game with map {map} at port {port}", 200
