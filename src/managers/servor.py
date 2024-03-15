@@ -2,6 +2,7 @@ from threading import Thread
 import time
 
 from instance import ServerInstance
+from managers.porter import Porter
 from utils import kill_process_tree
 
 # Main instances running
@@ -24,9 +25,11 @@ class Servor:
         if hard_close:
             # Kill immediately if required
             kill_process_tree(instance.process.pid)
+            instance.cleanup_after_close()
         else:
             # Otherwise queue for kill if still exists after 1 minute
             closed_instances[time.time_ns() + 60000000000] = instance
+        # In any case remove from "running" instances
         instances.remove(instance)
 
     @staticmethod
@@ -43,9 +46,10 @@ class ServorThread(Thread):
         yoink_out: list[int] = []
         time_rn = time.time_ns()
 
-        # Perform the check
+        # Perform the check (& cleanup directly if found)
         for check_time, instance in closed_instances.items():
             if check_time <= time_rn and not kill_process_tree(instance.process.pid):
+                instance.cleanup_after_close()
                 yoink_out.append(check_time)
             
         # If anything found to pass the check, remove it from the dict

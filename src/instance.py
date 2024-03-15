@@ -1,6 +1,9 @@
 from dataclasses import dataclass
+import shutil
 import subprocess
 from typing import Any
+
+from managers.porter import Porter
 
 
 @dataclass
@@ -26,3 +29,7 @@ class ServerInstance:
             "port": self.port,
             "pid": self.process.pid #why not
         }
+    
+    def cleanup_after_close(self):
+        Porter.free_port(self.port)
+        shutil.rmtree(f"instances/{self.get_name()}")
