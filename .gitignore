@@ -1,3 +1,4 @@
 cache/servers/*
 cache/maps/*
 instances/*
+*.pyc
