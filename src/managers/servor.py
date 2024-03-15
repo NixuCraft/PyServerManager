@@ -13,7 +13,6 @@ closed_instances: dict[int, ServerInstance] = {}
 class Servor:
     @staticmethod
     def add_instance(instance: ServerInstance):
-        print(instance.process.pid)
         instances.append(instance)
 
     @staticmethod
