@@ -1,6 +1,3 @@
-
-from crypt import methods
-
 from flask import request
 from managers.servor import Servor
 from variables import flask_app
@@ -10,12 +7,14 @@ def close_server():
     data: dict[str, str] = request.get_json()
     instances = Servor.get_instances_list()
 
+    hard = bool(data.get("hard", True))
+
     port = data.get("port")
     if port:
         port = int(port)
         for instance in instances:
             if instance.port == port:
-                Servor.close_instance(instance)
+                Servor.close_instance(instance, hard)
                 return f"Successfully closed server {instance.get_name()} using port", 200
     
     pid = data.get("pid")
@@ -23,7 +22,7 @@ def close_server():
         pid = int(pid)
         for instance in instances:
             if instance.process.pid == pid:
-                Servor.close_instance(instance)
+                Servor.close_instance(instance, hard)
                 return f"Successfully closed server {instance.get_name()} using pid", 200
 
     if not pid and not port:

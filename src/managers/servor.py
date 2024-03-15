@@ -1,12 +1,19 @@
-import random
-import subprocess
+from threading import Thread
+import time
 
 from instance import ServerInstance
+from utils import kill_process_tree
 
+# Main instances running
 instances: list[ServerInstance] = []
+
+# Closed instances, ran through ServorThread to check if the servers are indeed closed
+closed_instances: dict[int, ServerInstance] = {}
+
 class Servor:
     @staticmethod
     def add_instance(instance: ServerInstance):
+        print(instance.process.pid)
         instances.append(instance)
 
     @staticmethod
@@ -14,9 +21,13 @@ class Servor:
         return list(instances)
 
     @staticmethod
-    def close_instance(instance: ServerInstance):
-        # todo: better close system
-        instance.process.kill()
+    def close_instance(instance: ServerInstance, hard_close: bool):
+        if hard_close:
+            # Kill immediately if required
+            kill_process_tree(instance.process.pid)
+        else:
+            # Otherwise queue for kill if still exists after 1 minute
+            closed_instances[time.time_ns() + 60000000000] = instance
         instances.remove(instance)
 
     @staticmethod
@@ -25,3 +36,27 @@ class Servor:
             instance.process.kill()
         print(f"Killed {len(instances)} servers.")
         instances.clear()
+
+
+class ServorThread(Thread):
+    def check_closed_instances(self):
+        # Get time rn & make list of processes confirmed dead
+        yoink_out: list[int] = []
+        time_rn = time.time_ns()
+
+        # Perform the check
+        for check_time, instance in closed_instances.items():
+            if check_time <= time_rn and not kill_process_tree(instance.process.pid):
+                yoink_out.append(check_time)
+            
+        # If anything found to pass the check, remove it from the dict
+        for check_time in yoink_out:
+            closed_instances.pop(check_time)
+
+    def run(self):
+        while True:
+            self.check_closed_instances()
+            time.sleep(10)
+
+
+ServorThread().start()
