@@ -7,6 +7,7 @@ class ServerInstance:
     game: str
     map: str
     version: str
+    plugins: list[str]
     port: int
     process: subprocess.Popen
     

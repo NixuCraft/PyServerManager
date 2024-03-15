@@ -29,7 +29,18 @@ def new_server():
     map_folder = f"cache/maps/{game_version}/{map}"
     if not os.path.isdir(map_folder):
         return f"Missing folder for map {map} of game {game_version}", 400
-
+    
+    plugins: list[str] | str = data.get("plugins", [])
+    plugin_folder = f"cache/plugins/{version}"
+    if isinstance(plugins, str):
+        plugins = [plugins]
+    if len(plugins) > 0:
+        if not os.path.isdir(plugin_folder):
+            return f"Plugin(s) specified but no folder for {version} plugins", 400
+        for plugin in plugins:
+            if not os.path.isfile(f"{plugin_folder}/{plugin}.jar"):
+                return f"Plugin {plugin} doesn't exist for version {version}", 400
+    
     # Get port
     port = Porter.get_use_random_port()
 
@@ -38,17 +49,23 @@ def new_server():
     shutil.copytree(game_folder, instance_folder)
     shutil.copytree(map_folder, f"{instance_folder}/world")
 
+    # Copy plugins
+    for plugin in plugins: 
+        shutil.copy(f"{plugin_folder}/{plugin}.jar", f"{instance_folder}/plugins")
+
     # Patch properties file to match used port
     propfile = f"{instance_folder}/server.properties"
     with open(propfile, "r") as file: content = file.read()
     content = content.replace("server-port=25565", f"server-port={port}")
     with open(propfile, "w") as file: file.write(content)
 
+    # Start server
     if os.name == 'nt':
         process = subprocess.Popen(["cmd.exe", "/c", "start.bat"], cwd=instance_folder, stdout=None)
     else:
         process = subprocess.Popen(["sh", f"start.sh"], cwd=instance_folder, stdout=subprocess.DEVNULL)
 
-    Servor.add_instance(ServerInstance(game, map, version, port, process))
+    # Add instance to manager
+    Servor.add_instance(ServerInstance(game, map, version, plugins, port, process))
 
     return f"Started up new {game_version} game with map {map} at port {port}", 200
