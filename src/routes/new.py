@@ -30,6 +30,10 @@ def new_server():
     if not os.path.isdir(map_folder):
         return f"Missing folder for map {map} of game {game_version}", 400
     
+    args = data.get("args", {})
+    if not isinstance(args, dict):
+        return "Args not a dictionary"
+    
     plugins: list[str] | str = data.get("plugins", [])
     plugin_folder = f"cache/plugins/{version}"
     if isinstance(plugins, str):
@@ -66,6 +70,6 @@ def new_server():
         process = subprocess.Popen(["sh", f"start.sh"], cwd=instance_folder, stdout=subprocess.DEVNULL)
 
     # Add instance to manager
-    Servor.add_instance(ServerInstance(game, map, version, plugins, port, process))
+    Servor.add_instance(ServerInstance(game, map, version, plugins, args, port, process))
 
     return f"Started up new {game_version} game with map {map} at port {port}", 200

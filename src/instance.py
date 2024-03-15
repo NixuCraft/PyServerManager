@@ -9,7 +9,7 @@ class ServerInstance:
     map: str
     version: str
     plugins: list[str]
-    args: dict[str, Any]
+    args: dict[str, Any] # Note: this may get moved eg to the start.sh, for now staying here as it's simpler. May have minor overhead and complicate things a bit if running on different machines..
     port: int
     process: subprocess.Popen
     
