@@ -7,6 +7,12 @@ from instance import ServerInstance
 from managers.servor import Servor
 from variables import flask_app
 
+def error(message: str):
+    return {
+        "success": False,
+        "error": message
+    }, 400
+
 @flask_app.route("/new", methods=["POST"])
 def new_server():
     # Get data from request & perform checks
@@ -23,16 +29,16 @@ def new_server():
     game_version = f"{game}-{version}"
     game_folder = f"cache/servers/{game_version}"
     if not os.path.isdir(game_folder):
-        return f"Missing server folder for {game_version}", 400
+        return error(f"Missing server folder for {game_version}")
     
     map = data.get("map", "default")
     map_folder = f"cache/maps/{game_version}/{map}"
     if not os.path.isdir(map_folder):
-        return f"Missing folder for map {map} of game {game_version}", 400
+        return error(f"Missing folder for map {map} of game {game_version}")
     
     args = data.get("args", {})
     if not isinstance(args, dict):
-        return "Args not a dictionary"
+        return error("Args not a dictionary")
     
     plugins: list[str] | str = data.get("plugins", [])
     plugin_folder = f"cache/plugins/{version}"
@@ -40,10 +46,10 @@ def new_server():
         plugins = [plugins]
     if len(plugins) > 0:
         if not os.path.isdir(plugin_folder):
-            return f"Plugin(s) specified but no folder for {version} plugins", 400
+            return error(f"Plugin(s) specified but no folder for {version} plugins")
         for plugin in plugins:
             if not os.path.isfile(f"{plugin_folder}/{plugin}.jar"):
-                return f"Plugin {plugin} doesn't exist for version {version}", 400
+                error(f"Plugin {plugin} doesn't exist for version {version}")
     
     # Get port
     port = Porter.get_use_random_port()
@@ -70,6 +76,13 @@ def new_server():
         process = subprocess.Popen(["sh", f"start.sh"], cwd=instance_folder, stdout=subprocess.DEVNULL)
 
     # Add instance to manager
-    Servor.add_instance(ServerInstance(game, map, version, plugins, args, port, process))
+    instance = ServerInstance(game, map, version, plugins, args, port, process)
+    Servor.add_instance(instance)
 
-    return f"Started up new {game_version} game with map {map} at port {port}", 200
+    return {
+        "success": True,
+        "game_version": game_version,
+        "map": map,
+        "name": instance.get_name(),
+        "port": port
+    }, 200

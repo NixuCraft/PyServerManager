@@ -24,6 +24,7 @@ class ServerInstance:
             "game": self.game,
             "map": self.map,
             "version": self.version,
+            "name": self.get_name(),
             "plugins": self.plugins,
             "args": self.args,
             "port": self.port,

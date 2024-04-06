@@ -22,11 +22,15 @@ def kill_process_tree(pid: int) -> bool:
         
     children = parent.children(recursive=True)
     for child in children:
-        child.kill()
+        try:
+            child.kill()
+        except psutil.NoSuchProcess: pass
 
     def wait_and_terminate():
         psutil.wait_procs(children, timeout=5)
-        parent.kill() 
+        try:
+            parent.kill()
+        except psutil.NoSuchProcess: pass
         parent.wait(timeout=5) 
 
     # Thread to avoid blocking the main thread for wait_procs & wait
