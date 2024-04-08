@@ -8,6 +8,7 @@ from managers.servor import Servor
 from variables import flask_app
 
 def error(message: str):
+    print("return @ " + message)
     return {
         "success": False,
         "error": message
@@ -20,11 +21,11 @@ def new_server():
 
     game = data.get("game")
     if not game:
-        return "Game attribute missing", 400
+        return error("Game attribute missing")
     
     version = data.get("version")
     if not version:
-        return "Version attribute missing", 400
+        return error("Version attribute missing")
     
     game_version = f"{game}-{version}"
     game_folder = f"cache/servers/{game_version}"
