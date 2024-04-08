@@ -1,4 +1,5 @@
 import os
+import random
 import shutil
 import subprocess
 from flask import request
@@ -31,9 +32,19 @@ def new_server():
     game_folder = f"cache/servers/{game_version}"
     if not os.path.isdir(game_folder):
         return error(f"Missing server folder for {game_version}")
+
+    map_cache = f"cache/maps/{game_version}"
+    if not os.path.isdir(map_cache):
+        return error(f"Missing maps folder for game {game_version}")
     
     map = data.get("map", "default")
-    map_folder = f"cache/maps/{game_version}/{map}"
+    if map == "RANDOM":
+        maps = os.listdir(map_cache)
+        if len(maps) == 0:
+            return error(f"Map random specified for {game_version}, but there are no maps in the maps folder")
+        map = random.choice(maps)
+    
+    map_folder = f"{map_cache}/{map}"
     if not os.path.isdir(map_folder):
         return error(f"Missing folder for map {map} of game {game_version}")
     
