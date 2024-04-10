@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import os
 import shutil
 import subprocess
 from typing import Any
@@ -7,7 +8,6 @@ from managers.instances.porter import Porter
 from datatypes.gametype import GameType
 
 
-@dataclass
 class ServerInstance:
     gametype: GameType
     map: str
@@ -15,8 +15,38 @@ class ServerInstance:
     port: int
     process: subprocess.Popen
     
+    def __init__(self, gametype: GameType, map: str, args: dict[str, Any]):
+        self.gametype = gametype
+        self.map = map
+        self.args = args
+
+    def setup_and_run(self):
+        # Get port
+        self.port = Porter.get_use_random_port()
+
+        # Copy files
+        instance_folder = f"instances/{self.gametype.full_name}_{self.port}"
+        shutil.copytree(self.gametype.get_server_folder(), instance_folder)
+        shutil.copytree(self.gametype.get_map_folder(), f"{instance_folder}/world")
+
+        # Copy plugins
+        for plugin in self.gametype.plugins: 
+            shutil.copy(f"cache/plugins/{plugin}.jar", f"{instance_folder}/plugins")
+
+        # Patch properties file to match used port
+        propfile = f"{instance_folder}/server.properties"
+        with open(propfile, "r") as file: content = file.read()
+        content = content.replace("server-port=25565", f"server-port={self.port}")
+        with open(propfile, "w") as file: file.write(content)
+
+        # Start server
+        if os.name == 'nt':
+            self.process = subprocess.Popen(["cmd.exe", "/c", "start.bat"], cwd=instance_folder, stdout=None)
+        else:
+            self.process = subprocess.Popen(["sh", f"start.sh"], cwd=instance_folder, stdout=subprocess.DEVNULL)
+
     def get_name(self):
-        return f"{self.gametype}_{self.port}"
+        return f"{self.gametype.full_name}_{self.port}"
 
     def serialize(self):
         return {
