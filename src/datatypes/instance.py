@@ -27,7 +27,7 @@ class ServerInstance:
         # Copy files
         instance_folder = f"instances/{self.gametype.full_name}_{self.port}"
         shutil.copytree(self.gametype.get_server_folder(), instance_folder)
-        shutil.copytree(self.gametype.get_map_folder(), f"{instance_folder}/world")
+        shutil.copytree(f"{self.gametype.get_map_folder()}/{self.map}", f"{instance_folder}/world")
 
         # Copy plugins
         for plugin in self.gametype.plugins: 
