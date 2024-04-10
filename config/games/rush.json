@@ -1,0 +1,29 @@
+{
+    "4v4": {
+        "display_name": "Rush 4v4",
+        "room_icon": "BED",
+        "min_players": 5,
+        "max_players": 8,
+        "min_protocol": 47,
+        "max_protocol": 765,
+        "plugins": []
+    },
+    "2v2": {
+        "display_name": "Rush 2v2",
+        "room_icon": "BED",
+        "min_players": 3,
+        "max_players": 4,
+        "min_protocol": 47,
+        "max_protocol": 765,
+        "plugins": []
+    },
+    "1v1": {
+        "display_name": "Rush 1v1",
+        "room_icon": "BED",
+        "min_players": 2,
+        "max_players": 2,
+        "min_protocol": 47,
+        "max_protocol": 765,
+        "plugins": []
+    }
+}

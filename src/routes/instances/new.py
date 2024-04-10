@@ -3,9 +3,9 @@ import random
 import shutil
 import subprocess
 from flask import request
-from managers.porter import Porter
-from instance import ServerInstance
-from managers.servor import Servor
+from managers.instances.porter import Porter
+from datatypes.instance import ServerInstance
+from managers.instances.servor import Servor
 from variables import flask_app
 
 def error(message: str):
@@ -15,7 +15,7 @@ def error(message: str):
         "error": message
     }, 400
 
-@flask_app.route("/new", methods=["POST"])
+@flask_app.route("/instances/new", methods=["POST"])
 def new_server():
     # Get data from request & perform checks
     data: dict[str, str] = request.get_json()
@@ -24,11 +24,11 @@ def new_server():
     if not game:
         return error("Game attribute missing")
     
-    version = data.get("version")
-    if not version:
+    variant = data.get("variant")
+    if not variant:
         return error("Version attribute missing")
     
-    game_version = f"{game}-{version}"
+    game_version = f"{game}-{variant}"
     game_folder = f"cache/servers/{game_version}"
     if not os.path.isdir(game_folder):
         return error(f"Missing server folder for {game_version}")

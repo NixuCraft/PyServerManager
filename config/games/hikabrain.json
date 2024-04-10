@@ -1,0 +1,20 @@
+{
+    "1v1": {
+        "display_name": "Hikabrain 1v1",
+        "room_icon": "SANDSTONE",
+        "min_players": 2,
+        "max_players": 2,
+        "min_protocol": 47,
+        "max_protocol": 765,
+        "plugins": []
+    },
+    "2v2": {
+        "display_name": "Hikabrain 2v2",
+        "room_icon": "SANDSTONE",
+        "min_players": 3,
+        "max_players": 4,
+        "min_protocol": 47,
+        "max_protocol": 765,
+        "plugins": []
+    }
+}

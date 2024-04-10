@@ -1,0 +1,20 @@
+{
+    "4v4": {
+        "display_name": "Towers 4v4",
+        "room_icon": "HARD_CLAY",
+        "min_players": 5,
+        "max_players": 8,
+        "min_protocol": 110,
+        "max_protocol": 110,
+        "plugins": []
+    },
+    "2v2": {
+        "display_name": "Towers 4v4",
+        "room_icon": "HARD_CLAY",
+        "min_players": 3,
+        "max_players": 4,
+        "min_protocol": 110,
+        "max_protocol": 110,
+        "plugins": []
+    }
+}

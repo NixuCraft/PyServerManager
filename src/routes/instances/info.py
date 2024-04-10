@@ -1,8 +1,8 @@
 from flask import request
-from managers.servor import Servor
+from managers.instances.servor import Servor
 from variables import flask_app
 
-@flask_app.route("/info")
+@flask_app.route("/instances/info")
 def server_info():
     port = request.get_json().get("port")
     if not port:

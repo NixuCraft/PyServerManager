@@ -1,8 +1,8 @@
 from flask import request
-from managers.servor import Servor
+from managers.instances.servor import Servor
 from variables import flask_app
 
-@flask_app.route("/close", methods=["POST"])
+@flask_app.route("/instances/close", methods=["POST"])
 def close_server():
     data: dict[str, str] = request.get_json()
     instances = Servor.get_instances_list()

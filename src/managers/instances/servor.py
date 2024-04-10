@@ -1,8 +1,8 @@
 from threading import Thread
 import time
 
-from instance import ServerInstance
-from managers.porter import Porter
+from datatypes.instance import ServerInstance
+from managers.instances.porter import Porter
 from utils import kill_process_tree
 
 # Main instances running

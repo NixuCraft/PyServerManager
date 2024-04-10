@@ -1,9 +1,10 @@
 from gevent.pywsgi import WSGIServer
-from managers.servor import Servor
+from managers.instances.servor import Servor
 from utils import cleanup_files
 from variables import flask_app
 
-from routes import new, list, close
+from routes.instances import new, list, close
+from routes.games import all_game_types
 
 if __name__ == "__main__":
     cleanup_files()
