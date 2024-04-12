@@ -1,4 +1,5 @@
 cache/servers/*
 cache/maps/*
+cache/plugins/*
 instances/*
 *.pyc
