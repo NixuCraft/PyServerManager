@@ -3,3 +3,4 @@ cache/maps/*
 cache/plugins/*
 instances/*
 *.pyc
+logs/
