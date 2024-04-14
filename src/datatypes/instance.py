@@ -1,6 +1,6 @@
 from dataclasses import dataclass
+from datetime import datetime
 import logging
-import os
 import shutil
 import subprocess
 from typing import Any
@@ -45,10 +45,9 @@ class ServerInstance:
         with open(propfile, "w") as file: file.write(content)
 
         # Start server
-        if os.name == 'nt':
-            self.process = subprocess.Popen(["cmd.exe", "/c", "start.bat"], cwd=instance_folder, stdout=None)
-        else:
-            self.process = subprocess.Popen(["sh", f"start.sh"], cwd=instance_folder, stdout=subprocess.DEVNULL)
+        date = datetime.now().isoformat('-').replace(":", "-")
+        with open(f"logs_servers/[{date}] {self.get_name()}.txt" , "a") as output_file:
+            self.process = subprocess.Popen(["sh", "start.sh"], cwd=instance_folder, stdout=output_file, stderr=subprocess.STDOUT)
 
         logger.debug("Started server: " + self.get_name())
 

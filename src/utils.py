@@ -8,6 +8,8 @@ import psutil
 def cleanup_files():
     shutil.rmtree("instances/")
     os.mkdir("instances/")
+    if not os.path.exists("logs_servers/"):
+        os.makedirs("logs_servers")
 
 
 def kill_process_tree(pid: int) -> bool:

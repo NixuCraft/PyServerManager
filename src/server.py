@@ -25,6 +25,6 @@ if __name__ == "__main__":
     try:
         http_server.serve_forever()
     except KeyboardInterrupt: pass
-    print("Keyboard interrupt detected, cleaning up")
+    logger.info("Keyboard interrupt detected, cleaning up")
     Servor.close_all_instances()
     cleanup_files()

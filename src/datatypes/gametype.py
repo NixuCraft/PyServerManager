@@ -47,6 +47,7 @@ class GameType:
             "name": self.name,
             "variant": self.variant,
             "display_name": self.display_name,
+            "room_icon": self.room_icon,
             "min_protocol": self.min_protocol,
             "max_protocol": self.max_protocol,
             "min_players": self.min_players,

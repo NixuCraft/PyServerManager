@@ -4,3 +4,4 @@ cache/plugins/*
 instances/*
 *.pyc
 logs/
+logs_servers/
