@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import logging
 import os
 import shutil
 import subprocess
@@ -7,18 +8,20 @@ from typing import Any
 from managers.instances.porter import Porter
 from datatypes.gametype import GameType
 
+logger = logging.getLogger("datatypes.instance")
 
 class ServerInstance:
     gametype: GameType
-    map: str
+    map: str | None
     args: dict[str, Any] # Note: this may get moved eg to the start.sh, for now staying here as it's simpler. May have minor overhead and complicate things a bit if running on different machines..
     port: int
     process: subprocess.Popen
     
-    def __init__(self, gametype: GameType, map: str, args: dict[str, Any]):
+    def __init__(self, gametype: GameType, map: str | None, args: dict[str, Any]):
         self.gametype = gametype
         self.map = map
         self.args = args
+        logger.debug("Created ServerInstance: " + gametype.full_name + " with map " + str(map) + " & args " + str(args))
 
     def setup_and_run(self):
         # Get port
@@ -26,8 +29,10 @@ class ServerInstance:
 
         # Copy files
         instance_folder = f"instances/{self.gametype.full_name}_{self.port}"
+        print(instance_folder)
         shutil.copytree(self.gametype.get_server_folder(), instance_folder)
-        shutil.copytree(f"{self.gametype.get_map_folder()}/{self.map}", f"{instance_folder}/world")
+        if self.map:
+            shutil.copytree(f"{self.gametype.get_map_folder()}/{self.map}", f"{instance_folder}/world")
 
         # Copy plugins
         for plugin in self.gametype.plugins: 
@@ -45,6 +50,9 @@ class ServerInstance:
         else:
             self.process = subprocess.Popen(["sh", f"start.sh"], cwd=instance_folder, stdout=subprocess.DEVNULL)
 
+        logger.debug("Started server: " + self.get_name())
+
+        
     def get_name(self):
         return f"{self.gametype.full_name}_{self.port}"
 

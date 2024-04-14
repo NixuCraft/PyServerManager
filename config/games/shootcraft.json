@@ -1,0 +1,12 @@
+{
+    "default": {
+        "display_name": "Towers 4v4",
+        "room_icon": "HARD_CLAY",
+        "min_players": 5,
+        "max_players": 8,
+        "min_protocol": 110,
+        "max_protocol": 110,
+        "plugins": ["packetevents"],
+        "persistent_meta": {"startup_instances": 2}
+    }
+}

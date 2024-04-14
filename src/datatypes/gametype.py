@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 import os
 
+from datatypes.persistentmeta import PersistentMeta
+
 def bad(string: str) -> tuple[bool, str]:
     return (False, string)
 
@@ -23,6 +25,22 @@ class GameType:
     max_players: int
 
     plugins: list[str]
+    
+    persistent_meta: PersistentMeta | None = None 
+
+    def __post_init__(self):
+        # Gen full name
+        self.full_name = f"{self.name}-{self.variant}"
+
+        # Rework persistent meta to the right format
+        if self.persistent_meta:
+            self.persistent_meta = PersistentMeta(**self.persistent_meta) #type: ignore
+        
+        # res = self.check_main_folders_exist()
+        # if not res[0]:
+        #     raise Exception("Missing folders for gametype" + self.name + "-" + self.variant)
+        # for debugging purposes, this is done on the new endpoint.
+        # note that even if i do it on the new endpoint, i should still do it here just to make sure.
 
     def serialize(self):
         return {
@@ -33,29 +51,21 @@ class GameType:
             "max_protocol": self.max_protocol,
             "min_players": self.min_players,
             "max_players": self.max_players,
-            "plugins": self.plugins
+            "plugins": self.plugins,
+            "is_persistent": self.is_persistent()
         }
+
+    def is_persistent(self):
+        return self.persistent_meta != None
         
     def get_map_folder(self):
         return f"cache/maps/{self.name}"
     def get_server_folder(self):
-        return f"cache/servers/{self.full_name}"        
-
-    def __post_init__(self):
-        self.full_name = f"{self.name}-{self.variant}"
-        # res = self.check_main_folders_exist()
-        # if not res[0]:
-        #     raise Exception("Missing folders for gametype" + self.name + "-" + self.variant)
-        # for debugging purposes, this is done on the new endpoint.
-        # note that even if i do it on the new endpoint, i should still do it here just to make sure.
-        pass
+        return f"cache/servers/{self.full_name}"
     
     def check_main_folders_exist(self) -> tuple[bool, str]:
         if not os.path.isdir(self.get_server_folder()):
             return bad(f"Missing server folder for {self.full_name}")
-
-        if not os.path.isdir(self.get_map_folder()):
-            return bad(f"Missing maps folder for game {self.name}")
         
         if len(self.plugins) > 0:
             for plugin in self.plugins:
@@ -65,6 +75,9 @@ class GameType:
         return (True, "")
 
     def check_map_exists(self, map: str) -> tuple[bool, str]:
+        if not os.path.isdir(self.get_map_folder()):
+            return bad(f"Missing maps folder for game {self.name}")
+        
         if not os.path.isdir(f"{self.get_map_folder()}/{map}"):
             return bad(f"Missing folder for map {map} of game {self.name}")
         return (True, "")
