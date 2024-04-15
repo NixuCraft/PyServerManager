@@ -1,11 +1,11 @@
 from flask import request
-from managers.instances.servor import Servor
+from managers.servermanager import ServerManager
 from variables import flask_app
 
 @flask_app.route("/instances/close", methods=["POST"])
 def close_server():
     data: dict[str, str] = request.get_json()
-    instances = Servor.get_instances_list()
+    instances = ServerManager.get_instances_list()
 
     hard = bool(data.get("hard", True))
 
@@ -14,7 +14,7 @@ def close_server():
         port = int(port)
         for instance in instances:
             if instance.port == port:
-                Servor.close_instance(instance, hard)
+                ServerManager.close_instance(instance, hard)
                 return f"Successfully closed server {instance.get_name()} using port", 200
     
     pid = data.get("pid")
@@ -22,7 +22,7 @@ def close_server():
         pid = int(pid)
         for instance in instances:
             if instance.process.pid == pid:
-                Servor.close_instance(instance, hard)
+                ServerManager.close_instance(instance, hard)
                 return f"Successfully closed server {instance.get_name()} using pid", 200
 
     if not pid and not port:

@@ -5,10 +5,10 @@ from typing import Any
 from utils import get_date_formatted
 from variables import logs_server_dir
 
-from managers.instances.porter import Porter
+from managers.portmanager import PortManager
 from datatypes.gametype import GameType
 
-logger = logging.getLogger("datatypes.instance")
+logger = logging.getLogger("datatypes.gameinstance")
 
 class ServerInstance:
     gametype: GameType
@@ -25,11 +25,10 @@ class ServerInstance:
 
     def setup_and_run(self):
         # Get port
-        self.port = Porter.get_use_random_port()
+        self.port = PortManager.get_use_random_port()
 
         # Copy files
         instance_folder = f"instances/{self.gametype.full_name}_{self.port}"
-        print(instance_folder)
         shutil.copytree(self.gametype.get_server_folder(), instance_folder)
         if self.map:
             shutil.copytree(f"{self.gametype.get_map_folder()}/{self.map}", f"{instance_folder}/world")
@@ -65,5 +64,5 @@ class ServerInstance:
         }
     
     def cleanup_after_close(self):
-        Porter.free_port(self.port)
+        PortManager.free_port(self.port)
         shutil.rmtree(f"instances/{self.get_name()}")

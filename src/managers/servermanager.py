@@ -1,9 +1,11 @@
+import logging
 from threading import Thread
 import time
 
-from datatypes.instance import ServerInstance
-from managers.instances.porter import Porter
+from datatypes.gameinstance import ServerInstance
 from utils import kill_process_tree
+
+logger = logging.getLogger("managers.servermanager")
 
 # Main instances running
 instances: list[ServerInstance] = []
@@ -11,7 +13,7 @@ instances: list[ServerInstance] = []
 # Closed instances, ran through ServorThread to check if the servers are indeed closed
 closed_instances: dict[int, ServerInstance] = {}
 
-class Servor:
+class ServerManager:
     @staticmethod
     def add_instance(instance: ServerInstance):
         instances.append(instance)
@@ -36,7 +38,7 @@ class Servor:
     def close_all_instances():
         for instance in instances:
             instance.process.kill()
-        print(f"Killed {len(instances)} servers.")
+        logger.info(f"Killed {len(instances)} servers.")
         instances.clear()
 
 

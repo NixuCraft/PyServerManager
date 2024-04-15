@@ -1,13 +1,16 @@
+import logging
 import os
 import random
 from flask import request
 from datatypes.gameinstance import ServerInstance
-from managers.instances.servor import Servor
-from managers.meta.gametypemgr import GameTypeManager
+from managers.servermanager import ServerManager
+from managers.gametypemgr import GameTypeManager
 from variables import flask_app
 
+logger = logging.getLogger("routes.instances.new")
+
 def error(message: str):
-    print("return @ " + message)
+    logger.info("return @ " + message)
     return {
         "success": False,
         "error": message
@@ -52,7 +55,7 @@ def new_server():
     
     instance = ServerInstance(gametype, map, args)
     instance.setup_and_run()
-    Servor.add_instance(instance)
+    ServerManager.add_instance(instance)
 
 
     return {

@@ -1,5 +1,5 @@
 from flask import request
-from managers.meta.gametypemgr import GameTypeManager
+from managers.gametypemgr import GameTypeManager
 from variables import flask_app
 
 @flask_app.route("/meta/all_game_types", methods=["GET"])
