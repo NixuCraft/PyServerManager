@@ -1,5 +1,11 @@
 {
     "python.analysis.autoImportCompletions": true,
     "python.analysis.typeCheckingMode": "basic",
-    "files.associations": { "*.json": "jsonc" }
+    "files.associations": { "*.json": "jsonc" },
+    "material-icon-theme.folders.associations": {
+        "instances": "job", // class/enum ok aussi
+        "logs_servers": "log",
+        "loaders": "include",
+        "datatypes": "app"
+    },
 }

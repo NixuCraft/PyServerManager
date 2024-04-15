@@ -1,7 +1,7 @@
 import os
 import random
 from flask import request
-from datatypes.instance import ServerInstance
+from datatypes.gameinstance import ServerInstance
 from managers.instances.servor import Servor
 from managers.meta.gametypemgr import GameTypeManager
 from variables import flask_app
