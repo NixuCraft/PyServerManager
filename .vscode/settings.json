@@ -3,7 +3,9 @@
     "python.analysis.typeCheckingMode": "basic",
     "files.associations": { "*.json": "jsonc" },
     "material-icon-theme.folders.associations": {
-        "instances": "job", // class/enum ok aussi
+        "instances": "class", // class/enum ok aussi
+        "instances_lobbies": "enum", // class/enum ok aussi
+        "instance": "job", // class/enum ok aussi
         "logs_servers": "log",
         "loaders": "include",
         "datatypes": "app"

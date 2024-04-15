@@ -2,6 +2,7 @@ cache/servers/*
 cache/maps/*
 cache/plugins/*
 instances/*
+instances_lobbies/
 *.pyc
 logs/
 logs_servers/

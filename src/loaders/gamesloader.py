@@ -5,7 +5,7 @@ from typing import Any, cast
 
 import pyjson5
 
-from datatypes.gameinstance import ServerInstance
+from datatypes.instance.gameinstance import ServerInstance
 from datatypes.gametype import GameType
 from datatypes.persistentmeta import PersistentMeta
 from managers.servermanager import ServerManager

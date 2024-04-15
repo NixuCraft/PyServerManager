@@ -1,7 +1,7 @@
 import logging
 
 from datatypes.gametype import GameType
-logger = logging.getLogger("managers.meta.gametypemgr")
+logger = logging.getLogger("managers.gametypemgr")
 
 
 class GameTypeManager:

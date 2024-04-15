@@ -2,15 +2,16 @@ import logging
 import shutil
 import subprocess
 from typing import Any
+from datatypes.instance.instance import Instance
 from utils import get_date_formatted
 from variables import logs_server_dir
 
 from managers.portmanager import PortManager
 from datatypes.gametype import GameType
 
-logger = logging.getLogger("datatypes.gameinstance")
+logger = logging.getLogger("datatypes.instance.gameinstance")
 
-class ServerInstance:
+class ServerInstance(Instance):
     gametype: GameType
     map: str | None
     args: dict[str, Any] # Note: this may get moved eg to the start.sh, for now staying here as it's simpler. May have minor overhead and complicate things a bit if running on different machines..

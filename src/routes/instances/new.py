@@ -2,7 +2,7 @@ import logging
 import os
 import random
 from flask import request
-from datatypes.gameinstance import ServerInstance
+from datatypes.instance.gameinstance import ServerInstance
 from managers.servermanager import ServerManager
 from managers.gametypemgr import GameTypeManager
 from variables import flask_app

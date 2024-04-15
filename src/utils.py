@@ -10,8 +10,8 @@ from variables import logs_server_dir
 def cleanup_files():
     shutil.rmtree("instances/")
     os.mkdir("instances/")
-    if not os.path.exists(logs_server_dir):
-        os.makedirs(logs_server_dir)
+    if not os.path.exists(logs_server_dir + "/lobbies"):
+        os.makedirs(logs_server_dir + "/lobbies")
 
 
 def get_date_formatted():

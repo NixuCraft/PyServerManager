@@ -2,7 +2,7 @@ import logging
 from threading import Thread
 import time
 
-from datatypes.gameinstance import ServerInstance
+from datatypes.instance.gameinstance import ServerInstance
 from utils import kill_process_tree
 
 logger = logging.getLogger("managers.servermanager")

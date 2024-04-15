@@ -11,7 +11,7 @@ from utils import cleanup_files
 from variables import flask_app
 
 from routes.instances import new, list, close
-from routes.games import all_game_types
+from routes.meta import all_game_types, all_lobbies
 
 from managers.gametypemgr import GameTypeManager
 

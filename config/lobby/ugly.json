@@ -1,5 +1,10 @@
 {
+    // Note: Lobbies are the one thing we don't want the map to get replaced every time so we can do funky things
+    // and have them stay.
     "name": "main",
     "display_name": "Main ugly lobby",
-    "startup_instances": 1
+    // "startup_instances": 1 
+    // As of now, the format is made so that there's only one folder per declared lobby.
+    // This must/will change if enough players, but for now not required tbh.
+    // Problem for future me (for the multi server rewrite?)
 }

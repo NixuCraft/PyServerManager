@@ -1,4 +1,3 @@
-from flask import request
 from managers.gametypemgr import GameTypeManager
 from variables import flask_app
 
