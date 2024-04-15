@@ -1,9 +1,9 @@
-from dataclasses import dataclass
-from datetime import datetime
 import logging
 import shutil
 import subprocess
 from typing import Any
+from utils import get_date_formatted
+from variables import logs_server_dir
 
 from managers.instances.porter import Porter
 from datatypes.gametype import GameType
@@ -45,8 +45,7 @@ class ServerInstance:
         with open(propfile, "w") as file: file.write(content)
 
         # Start server
-        date = datetime.now().isoformat('-').replace(":", "-")
-        with open(f"logs_servers/[{date}] {self.get_name()}.txt" , "a") as output_file:
+        with open(f"{logs_server_dir}/[{get_date_formatted()}] {self.get_name()}.txt" , "a") as output_file:
             self.process = subprocess.Popen(["sh", "start.sh"], cwd=instance_folder, stdout=output_file, stderr=subprocess.STDOUT)
 
         logger.debug("Started server: " + self.get_name())

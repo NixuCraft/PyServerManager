@@ -1,16 +1,21 @@
+from datetime import datetime
 import os
 import shutil
 import threading
 
 import psutil
 
+from variables import logs_server_dir
 
 def cleanup_files():
     shutil.rmtree("instances/")
     os.mkdir("instances/")
-    if not os.path.exists("logs_servers/"):
-        os.makedirs("logs_servers")
+    if not os.path.exists(logs_server_dir):
+        os.makedirs(logs_server_dir)
 
+
+def get_date_formatted():
+    return datetime.now().strftime("%Y-%m-%d_%Hh%Mm%Ss")
 
 def kill_process_tree(pid: int) -> bool:
     """
