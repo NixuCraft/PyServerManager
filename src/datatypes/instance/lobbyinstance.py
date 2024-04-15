@@ -15,7 +15,7 @@ class LobbyInstance(Instance):
     process: subprocess.Popen
 
     def __init__(self, name: str, display_name: str):
-        self.name = name
+        self.name = "lobby_" + name
         self.display_name = display_name
         logger.debug(f"Created LobbyInstance {display_name}")
     

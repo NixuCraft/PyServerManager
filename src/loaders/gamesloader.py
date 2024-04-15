@@ -45,7 +45,7 @@ def load_games_data() -> LoadedGames:
     
     logger.info("Done loading data from config.")
 
-    return LoadedGames(data_dict, data_object, to_start)
+    return LoadedGames(data_object, data_dict, to_start)
 
 
 def start_persistent_servers(to_start: list[GameType]):

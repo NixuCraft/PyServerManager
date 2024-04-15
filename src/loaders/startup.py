@@ -1,6 +1,7 @@
 from loaders.gamesloader import load_games_data, start_persistent_servers
 from loaders.lobbyloader import load_lobbies_data
 from managers.gametypemgr import GameTypeManager
+from managers.lobbiesmanager import LobbiesManager
 from utils import cleanup_files
 
 
@@ -19,6 +20,7 @@ def perform_startup():
     # This shouldn't cause issues because the HTTP api starts instantly and Popen takes no time too,
     # so they have time to start before the servers.
     lobbies_data = load_lobbies_data()
+    LobbiesManager._lobby_instances = lobbies_data
 
     # Start everything
     start_persistent_servers(games_data.to_start)
