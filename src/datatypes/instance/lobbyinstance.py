@@ -1,4 +1,5 @@
 import logging
+import re
 import subprocess
 from variables import logs_server_dir
 
@@ -34,8 +35,8 @@ class LobbyInstance(Instance):
         instance_folder = f"instances_lobbies/{self.name}"
 
         propfile = f"{instance_folder}/server.properties"
-        with open(propfile, "r") as file: content = file.read()
-        content = content.replace("server-port=25565", f"server-port={self.port}")
+        with open(propfile, "r") as file: content = file.read()    
+        content = re.sub(r'server-port=\d{4,5}', f'server-port={self.port}', content)
         with open(propfile, "w") as file: file.write(content)
 
 
