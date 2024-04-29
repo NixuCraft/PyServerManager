@@ -9,7 +9,7 @@
         "plugins": ["packetevents", "towers"] // packetevents required for the scoreboard library.
     },
     "2v2": {
-        "display_name": "Towers 4v4",
+        "display_name": "Towers 2v2",
         "room_icon": "HARD_CLAY",
         "min_players": 3,
         "max_players": 4,

@@ -6,3 +6,4 @@ instances_lobbies/
 *.pyc
 logs/
 logs_servers/
+venv/
