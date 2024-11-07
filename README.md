@@ -1,3 +1,9 @@
+# Outdated
+This has been repaced by a more robust Java ServerManager using Sockets instead of HTTP.
+
+This tool is deprecated.
+
+
 # ServerMgr
 Early attempt at a quick and easy server manager to pop servers on demand for minigame servers.
 
